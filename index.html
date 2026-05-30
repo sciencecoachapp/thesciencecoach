@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Science Coach | Thomas Haycock</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--white:#fafaf8;--off:#f2f1ee;--ink:#1a1a2a;--mid:#6b6b7a;--border:rgba(26,26,42,0.1);--accent:#2563eb;--accent-light:#dbeafe;--gold:#b8860b;--gold-light:#fef9e7;--green:#059669}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--ink);font-family:'Outfit',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(250,250,248,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:-0.01em}
+.nav-logo span{color:var(--accent)}
+.nav-cta{background:var(--ink);color:var(--white);font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:10px 22px;border-radius:2px;text-decoration:none;transition:background 0.2s;border:none;cursor:pointer;font-family:'Outfit',sans-serif}
+.nav-cta:hover{background:var(--accent)}
+.tab-bar{position:fixed;top:64px;left:0;right:0;z-index:190;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow-x:auto;scrollbar-width:none}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{background:none;border:none;padding:0 28px;height:52px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:400;letter-spacing:0.06em;text-transform:uppercase;color:var(--mid);cursor:pointer;position:relative;transition:color 0.2s;white-space:nowrap}
+.tab-btn::after{content:'';position:absolute;bottom:0;left:28px;right:28px;height:2px;background:var(--accent);transform:scaleX(0);transition:transform 0.25s}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.active{color:var(--accent);font-weight:500}
+.tab-btn.active::after{transform:scaleX(1)}
+.page-wrapper{padding-top:116px;min-height:100vh}
+.panel{display:none;animation:fadeIn 0.3s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.wrap{max-width:1080px;margin:0 auto;padding:72px 48px}
+.lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.lbl::before{content:'';width:24px;height:1px;background:var(--accent)}
+.lbl.gold{color:var(--gold)}
+.lbl.gold::before{background:var(--gold)}
+h2.sec{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,54px);font-weight:300;line-height:1.05;letter-spacing:-0.02em;color:var(--ink);margin-bottom:16px}
+h2.sec em{font-style:italic;color:var(--accent)}
+.intro{font-size:16px;color:var(--mid);max-width:580px;line-height:1.85;margin-bottom:56px}
+.btn-p{display:inline-block;background:var(--ink);color:var(--white);padding:14px 32px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:background 0.2s,transform 0.2s;border:none;cursor:pointer}
+.btn-p:hover{background:var(--accent);transform:translateY(-1px)}
+.btn-g{display:inline-flex;align-items:center;gap:8px;color:var(--ink);font-size:12px;font-weight:400;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;transition:gap 0.2s;cursor:pointer;background:none;border:none;font-family:'Outfit',sans-serif}
+.btn-g::after{content:'→'}
+.btn-g:hover{gap:14px}
+/* HOME */
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.eyebrow-line{width:36px;height:1px;background:var(--accent)}
+.eyebrow-txt{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent)}
+.home-grid h1{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5.5vw,72px);font-weight:300;line-height:1.05;letter-spacing:-0.02em;margin-bottom:24px}
+.home-grid h1 em{font-style:italic;color:var(--accent)}
+.home-grid p{font-size:16px;color:var(--mid);line-height:1.85;max-width:460px;margin-bottom:40px}
+.home-actions{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-top:56px}
+.stat{background:var(--white);padding:28px 24px;text-align:center}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:var(--ink);line-height:1;margin-bottom:6px}
+.stat-l{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid)}
+.cred-card{background:var(--white);border:1px solid var(--border);border-radius:4px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.07),0 4px 16px rgba(0,0,0,0.04)}
+.cred-top{height:4px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.cred-item{display:flex;align-items:flex-start;gap:16px;padding:18px 32px;border-bottom:1px solid var(--border);transition:background 0.15s}
+.cred-item:last-child{border-bottom:none}
+.cred-item:hover{background:var(--off)}
+.cred-ico{width:38px;height:38px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;margin-top:1px}
+.cred-t{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.cred-s{font-size:12px;color:var(--mid);line-height:1.5}
+.strip{background:var(--accent);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.strip-t{font-size:15px;color:var(--white)}
+.strip-t strong{font-weight:600}
+.strip-b{background:rgba(255,255,255,0.15);color:var(--white);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:8px 18px;border-radius:2px;cursor:pointer;border:none;transition:background 0.2s}
+.strip-b:hover{background:rgba(255,255,255,0.25)}
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.about-q{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.5vw,30px);font-weight:300;font-style:italic;line-height:1.45;color:var(--ink);padding-left:28px;border-left:2px solid var(--accent);margin-bottom:36px}
+.about-b{font-size:15px;color:#444;line-height:1.9;margin-bottom:18px}
+.about-sig{margin-top:32px;padding-top:28px;border-top:1px solid var(--border)}
+.about-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--ink);margin-bottom:4px}
+.about-role{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--mid);text-transform:uppercase}
+.facts{display:grid;gap:16px}
+.fact{background:var(--off);border-radius:4px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;border:1px solid var(--border)}
+.fact-n{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--accent);line-height:1}
+.fact-l{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:3px}
+.fact-d{font-size:13px;color:var(--mid);line-height:1.6}
+/* SUBJECTS */
+.sub-group-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--mid);margin-bottom:12px;padding-left:2px}
+.sub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.sub-grid-single{grid-template-columns:1fr}
+.sub-grid-two{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.sub-card{background:var(--white);padding:40px 36px;position:relative;overflow:hidden;transition:background 0.2s}
+.sub-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.3s}
+.sub-card:hover{background:var(--off)}
+.sub-card:hover::after{transform:scaleX(1)}
+.sub-card-highlight{background:var(--accent-light)}
+.sub-card-highlight:hover{background:#c7d9fd}
+.sub-card-highlight .sub-brd{color:var(--accent)}
+.sub-card-highlight .sub-name{color:var(--ink)}
+.sub-emo{font-size:30px;margin-bottom:18px}
+.sub-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--ink);margin-bottom:8px}
+.sub-brd{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.sub-desc{font-size:13px;color:var(--mid);line-height:1.75}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2px;background:var(--ink);border-radius:4px;overflow:hidden;margin-top:56px}
+.step{background:var(--ink);padding:36px 28px;position:relative;transition:background 0.2s}
+.step:hover{background:rgba(255,255,255,0.04)}
+.step-n{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:rgba(255,255,255,0.05);line-height:1;position:absolute;top:16px;right:20px}
+.step-ico{font-size:22px;margin-bottom:18px}
+.step-t{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--white);margin-bottom:10px}
+.step-d{font-size:12px;color:rgba(250,250,248,0.5);line-height:1.8}
+/* SESSION */
+.session-grid{display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start}
+.session-timeline{border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--white)}
+.session-block{display:grid;grid-template-columns:100px 1fr;border-bottom:1px solid var(--border)}
+.session-time{background:var(--off);padding:24px 20px;font-family:'DM Mono',monospace;font-size:11px;color:var(--mid);letter-spacing:0.05em;border-right:1px solid var(--border);display:flex;align-items:flex-start;padding-top:28px}
+.session-content{padding:24px 28px}
+.session-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--ink);margin-bottom:8px}
+.session-desc{font-size:13px;color:var(--mid);line-height:1.8}
+.session-sidebar{display:grid;gap:24px}
+.session-tools{background:var(--off);border:1px solid var(--border);border-radius:4px;padding:28px}
+.tool-item{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--border)}
+.tool-item:last-child{border-bottom:none;padding-bottom:0}
+.tool-item:first-child{padding-top:0}
+.tool-ico{font-size:20px;width:32px;flex-shrink:0;margin-top:2px}
+.tool-t{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.tool-d{font-size:12px;color:var(--mid);line-height:1.6}
+.session-note{background:var(--accent-light);border:1px solid rgba(37,99,235,0.15);border-radius:4px;padding:28px}
+@media(max-width:820px){.session-grid{grid-template-columns:1fr}.session-block{grid-template-columns:80px 1fr}}
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-bottom:40px}
+.pc{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:36px 28px;position:relative;transition:transform 0.2s,box-shadow 0.2s}
+.pc:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.08)}
+.pc.feat{border-color:var(--accent)}
+.pc.feat::before{content:'Most Popular';position:absolute;top:-10px;left:24px;background:var(--accent);color:var(--white);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border-radius:2px}
+.pc-lvl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.pc-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--ink);margin-bottom:20px;line-height:1.2}
+.pc-amt{font-family:'Cormorant Garamond',serif;font-size:54px;font-weight:300;color:var(--ink);line-height:1;margin-bottom:4px}
+.pc-amt sup{font-size:22px;vertical-align:super}
+.pc-per{font-family:'DM Mono',monospace;font-size:11px;color:var(--mid);margin-bottom:24px}
+.pc-div{height:1px;background:var(--border);margin-bottom:20px}
+.pc-feats{list-style:none;display:grid;gap:8px}
+.pc-feats li{font-size:13px;color:var(--mid);padding-left:18px;position:relative;line-height:1.5}
+.pc-feats li::before{content:'✓';position:absolute;left:0;color:var(--green);font-size:11px;top:2px}
+.price-note{background:var(--off);border-left:3px solid var(--accent);padding:20px 24px;border-radius:0 4px 4px 0;font-size:14px;color:var(--mid);line-height:1.8}
+.price-note strong{color:var(--accent);font-weight:500}
+/* INTERNATIONAL */
+.intl-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.intl-feats{display:grid;gap:24px;margin-bottom:40px}
+.intl-feat{display:flex;gap:16px;align-items:flex-start}
+.intl-ico{width:42px;height:42px;background:var(--gold-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.intl-ft{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.intl-fd{font-size:13px;color:var(--mid);line-height:1.75}
+.intl-spec{background:var(--gold-light);border:1px solid rgba(184,134,11,0.2);border-radius:4px;overflow:hidden}
+.intl-spec-hd{padding:24px 28px;border-bottom:1px solid rgba(184,134,11,0.15);font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--ink)}
+.intl-row{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;border-bottom:1px solid rgba(184,134,11,0.1);font-size:13px}
+.intl-row:last-child{border-bottom:none}
+.intl-k{color:var(--mid)}
+.intl-v{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink)}
+.zones{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
+.zone{background:var(--off);border:1px solid var(--border);border-radius:4px;padding:14px 16px;text-align:center}
+.zone-f{font-size:22px;margin-bottom:6px}
+.zone-n{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--mid)}
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.c-items{display:grid;gap:0;margin-bottom:40px}
+.c-item{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--border)}
+.c-item:last-child{border-bottom:none}
+.c-ico{width:38px;height:38px;background:var(--accent-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:2px}
+.c-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:3px}
+.c-val{font-size:14px;color:var(--ink);font-weight:400}
+.c-note{background:var(--off);border-radius:4px;padding:20px 24px;font-size:13px;color:var(--mid);line-height:1.8;border:1px solid var(--border)}
+.c-note strong{color:var(--ink);font-weight:500}
+.fg{margin-bottom:18px}
+.fl{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
+.fi,.fs,.ft{width:100%;background:var(--white);border:1px solid var(--border);border-radius:2px;padding:13px 16px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:300;color:var(--ink);transition:border-color 0.2s;outline:none;appearance:none}
+.fi:focus,.fs:focus,.ft:focus{border-color:var(--accent)}
+.ft{min-height:110px;resize:vertical}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fsub{width:100%;background:var(--ink);color:var(--white);border:none;padding:15px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;border-radius:2px;cursor:pointer;transition:background 0.2s,transform 0.2s;margin-top:6px}
+.fsub:hover{background:var(--accent);transform:translateY(-1px)}
+.fnote{font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-align:center;margin-top:12px;letter-spacing:0.05em}
+.fok{display:none;text-align:center;padding:48px 32px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:4px}
+.fok-ico{font-size:40px;margin-bottom:16px}
+.fok h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--ink);margin-bottom:10px}
+.fok p{font-size:14px;color:var(--mid);line-height:1.8}
+footer{background:#06060a;padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.fl2{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:rgba(250,250,248,0.35)}
+.fl2 span{color:var(--accent)}
+.ft2{font-family:'DM Mono',monospace;font-size:10px;color:rgba(250,250,248,0.2);letter-spacing:0.05em}
+@media(max-width:820px){
+  nav{padding:0 24px}
+  .tab-btn{padding:0 16px;font-size:11px}
+  .wrap{padding:48px 24px}
+  .home-grid,.about-grid,.intl-grid,.contact-grid{grid-template-columns:1fr;gap:40px}
+  .frow{grid-template-columns:1fr}
+  .strip{padding:16px 24px;flex-direction:column;text-align:center}
+  footer{padding:24px;flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo" onclick="showTab('home');return false;">The Science<span>Coach</span></a>
+  <button class="nav-cta" onclick="showTab('contact')">Book a Free Call</button>
+</nav>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('home')">Home</button>
+  <button class="tab-btn" onclick="showTab('about')">About</button>
+  <button class="tab-btn" onclick="showTab('subjects')">Subjects</button>
+  <button class="tab-btn" onclick="showTab('pricing')">Pricing</button>
+  <button class="tab-btn" onclick="showTab('session')">Example Session</button>
+  <button class="tab-btn" onclick="showTab('international')">International</button>
+  <button class="tab-btn" onclick="showTab('contact')">Contact</button>
+</div>
+
+<div class="page-wrapper">
+
+<!-- HOME -->
+<div class="panel active" id="panel-home">
+  <div class="wrap">
+    <div class="home-grid">
+      <div>
+        <div class="eyebrow"><div class="eyebrow-line"></div><div class="eyebrow-txt">GCSE · iGCSE · A-Level Biology</div></div>
+        <h1>Expert science<br>tutoring by<br><em>Thomas Haycock</em></h1>
+        <p>I still teach in a secondary school — which means I know exactly where students lose marks, why concepts don't stick, and how to fix both. As a trained exam marker and Head of Faculty, I know precisely what examiners reward, because I've sat on both sides of the paper.</p>
+        <div class="home-actions">
+          <button class="btn-p" onclick="showTab('contact')">Book a Free Intro Call</button>
+          <button class="btn-g" onclick="showTab('subjects')">View Subjects</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="stat-n">15</div><div class="stat-l">Years Teaching</div></div>
+          <div class="stat"><div class="stat-n">Free</div><div class="stat-l">Intro Call</div></div>
+          <div class="stat"><div class="stat-n">4–9</div><div class="stat-l">Grades Supported</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="cred-card">
+          <div class="cred-top"></div>
+          <div class="cred-item"><div class="cred-ico">🏫</div><div><div class="cred-t">Head of Science Faculty</div><div class="cred-s">Current secondary school leadership role in Cornwall</div></div></div>
+          <div class="cred-item"><div class="cred-ico">🎓</div><div><div class="cred-t">NPQSL Qualified</div><div class="cred-s">National Professional Qualification for Senior Leadership</div></div></div>
+          <div class="cred-item"><div class="cred-ico">📝</div><div><div class="cred-t">Trained Exam Marker</div><div class="cred-s">Experienced marking GCSE science papers — knows exactly what examiners reward</div></div></div>
+          <div class="cred-item"><div class="cred-ico">🔬</div><div><div class="cred-t">All Three Sciences</div><div class="cred-s">Biology, Chemistry & Physics — GCSE through A-Level</div></div></div>
+          <div class="cred-item"><div class="cred-ico">🌍</div><div><div class="cred-t">UK & International</div><div class="cred-s">AQA, OCR & Cambridge iGCSE specialist</div></div></div>
+          <div class="cred-item"><div class="cred-ico">📍</div><div><div class="cred-t">Online & In Person</div><div class="cred-s">Worldwide online · In person in St Ives, Cornwall</div></div></div>
+          <div class="cred-item"><div class="cred-ico">✅</div><div><div class="cred-t">Enhanced DBS Certified</div><div class="cred-s">Full enhanced DBS certificate held — safe and fully vetted</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="strip">
+    <div class="strip-t"><strong>Free 15-minute introductory call</strong> — discuss your goals, identify the gaps, and agree a plan before we start.</div>
+    <button class="strip-b" onclick="showTab('contact')">Book Now →</button>
+  </div>
+  <div class="wrap" style="padding-top:56px;padding-bottom:56px;">
+    <div class="lbl">How It Works</div>
+    <h2 class="sec" style="margin-bottom:40px;">The <em>process</em></h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div><div class="step-ico">📞</div><div class="step-t">Free Intro Call</div><div class="step-d">15 minutes to understand your goals and agree a plan before any commitment.</div></div>
+      <div class="step"><div class="step-n">02</div><div class="step-ico">🎯</div><div class="step-t">Diagnosis</div><div class="step-d">Identify exactly where marks are being lost — not just what feels difficult.</div></div>
+      <div class="step"><div class="step-n">03</div><div class="step-ico">📚</div><div class="step-t">Content</div><div class="step-d">New topics explained clearly and built into a coherent framework.</div></div>
+      <div class="step"><div class="step-n">04</div><div class="step-ico">📝</div><div class="step-t">Exam Technique</div><div class="step-d">Past papers, command words, mark scheme thinking. Skills most students are never taught.</div></div>
+      <div class="step"><div class="step-n">05</div><div class="step-ico">📊</div><div class="step-t">Progress Reports</div><div class="step-d">Regular updates so students and parents always know where they stand.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="panel" id="panel-about">
+  <div class="wrap">
+    <div class="lbl">About</div>
+    <h2 class="sec">Thomas <em>Haycock</em></h2>
+    <div class="about-grid">
+      <div>
+        <blockquote class="about-q">"15 years teaching and leading in secondary science has shown me that every student can excel — the starting point just varies. My job is to find the right pathway for each individual, whether that means rebuilding confidence from the ground up or pushing for that final grade boundary. No two students are the same, and no two sessions are either."</blockquote>
+        <p class="about-b">I'm a Head of Science Faculty at a secondary school in Cornwall with 15 years of classroom experience and an NPQSL qualification. I work with students at every point in the academic year — not just in the weeks before exams.</p>
+        <p class="about-b">For students earlier in their course, sessions focus on building genuine understanding of new content as it's introduced at school, so nothing is left to unravel later. As exams approach, the focus shifts to past papers, mark scheme thinking, and the exam technique skills that most students are never explicitly taught.</p>
+        <p class="about-b">Students who start in September consistently outperform those who begin tutoring in the spring term. Year-round support is always available.</p>
+        <div class="about-sig">
+          <div class="about-name">Thomas Haycock</div>
+          <div class="about-role">Head of Science Faculty · NPQSL Qualified</div>
+        </div>
+      </div>
+      <div class="facts">
+        <div class="fact"><div class="fact-n">15</div><div><div class="fact-l">Years of Experience</div><div class="fact-d">Secondary school teaching across all three sciences</div></div></div>
+        <div class="fact"><div class="fact-n">3</div><div><div class="fact-l">Exam Boards</div><div class="fact-d">AQA, OCR and Cambridge International</div></div></div>
+        <div class="fact"><div class="fact-n">5</div><div><div class="fact-l">Subjects & Levels</div><div class="fact-d">GCSE, iGCSE, A-Level, Triple Science, BTEC</div></div></div>
+        <div class="fact"><div class="fact-n">∞</div><div><div class="fact-l">Year-Round Support</div><div class="fact-d">New content, revision, and exam prep — every stage</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUBJECTS -->
+<div class="panel" id="panel-subjects">
+  <div class="wrap">
+    <div class="lbl">Subjects</div>
+    <h2 class="sec">What I <em>teach</em></h2>
+    <p class="intro">Specialist tuition across all three sciences from GCSE through to A-Level, covering UK and international curricula. New content and exam preparation available year-round.</p>
+
+    <!-- GCSE COMBINED -->
+    <div class="sub-group-label">GCSE Combined Science</div>
+    <div class="sub-grid sub-grid-single">
+      <div class="sub-card"><div class="sub-emo">🔬</div><div class="sub-name">Combined Science (Double Award)</div><div class="sub-brd">AQA · OCR · Foundation & Higher</div><div class="sub-desc">Biology, Chemistry and Physics covered together as a Double Award. Both Foundation and Higher tier supported across AQA and OCR. Ideal for students who want strong, well-rounded science results without taking the three sciences separately.</div></div>
+    </div>
+
+    <!-- GCSE SEPARATE -->
+    <div class="sub-group-label" style="margin-top:40px;">GCSE Separate Sciences</div>
+    <div class="sub-grid">
+      <div class="sub-card"><div class="sub-emo">🧬</div><div class="sub-name">Biology</div><div class="sub-brd">AQA · OCR</div><div class="sub-desc">Cell biology, genetics, ecology, and beyond. Higher tier focus with grades 8 & 9 as the target. Exam technique and mark scheme thinking built in from session one.</div></div>
+      <div class="sub-card"><div class="sub-emo">⚗️</div><div class="sub-name">Chemistry</div><div class="sub-brd">AQA · OCR</div><div class="sub-desc">Atomic structure, bonding, quantitative chemistry, organic chemistry. Clear explanations that make complex concepts genuinely stick.</div></div>
+      <div class="sub-card"><div class="sub-emo">⚡</div><div class="sub-name">Physics</div><div class="sub-brd">AQA · OCR</div><div class="sub-desc">Forces, energy, waves, electricity. Mathematical problem-solving built alongside conceptual understanding for confident exam performance.</div></div>
+      <div class="sub-card sub-card-highlight" style="grid-column:1/-1;"><div class="sub-emo">🏆</div><div class="sub-name">All Three Sciences</div><div class="sub-brd">AQA · OCR · Full Programme</div><div class="sub-desc">A structured programme covering Biology, Chemistry and Physics together. Ideal for Triple Science students targeting top grades across all three. Sessions coordinated to complement your school timetable year-round.</div></div>
+    </div>
+
+    <!-- A-LEVEL & iGCSE -->
+    <div class="sub-group-label" style="margin-top:40px;">A-Level & International</div>
+    <div class="sub-grid sub-grid-two">
+      <div class="sub-card"><div class="sub-emo">🌱</div><div class="sub-name">A-Level Biology</div><div class="sub-brd">AQA · OCR</div><div class="sub-desc">AS and A2. Extended answer technique, essay structure, and the depth of understanding that separates A from A*.</div></div>
+      <div class="sub-card"><div class="sub-emo">🌍</div><div class="sub-name">Cambridge iGCSE</div><div class="sub-brd">Cambridge International</div><div class="sub-desc">Biology, Chemistry and Physics for students at international schools worldwide. Coursework and practical support included.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="panel" id="panel-pricing">
+  <div class="wrap">
+    <div class="lbl">Pricing</div>
+    <h2 class="sec">Transparent <em>rates</em></h2>
+    <p class="intro">All sessions are 60 minutes. Block bookings of 10 sessions receive a 5% discount. Every new student begins with a free 15-minute introductory call.</p>
+    <div class="price-grid">
+      <div class="pc"><div class="pc-lvl">GCSE</div><div class="pc-name">Single Science</div><div class="pc-amt"><sup>£</sup>50</div><div class="pc-per">per 60-minute session</div><div class="pc-div"></div><ul class="pc-feats"><li>Biology, Chemistry or Physics</li><li>Foundation & Higher tier</li><li>AQA & OCR exam boards</li><li>Year 10 & 11 students</li></ul></div>
+      <div class="pc feat"><div class="pc-lvl">GCSE</div><div class="pc-name">Triple Science</div><div class="pc-amt"><sup>£</sup>55</div><div class="pc-per">per 60-minute session</div><div class="pc-div"></div><ul class="pc-feats"><li>All three sciences covered</li><li>Grades 8 & 9 focus</li><li>AQA & OCR exam boards</li><li>Resource pack included</li></ul></div>
+      <div class="pc"><div class="pc-lvl">A-Level</div><div class="pc-name">Biology</div><div class="pc-amt"><sup>£</sup>65</div><div class="pc-per">per 60-minute session</div><div class="pc-div"></div><ul class="pc-feats"><li>AS & A2 Biology</li><li>A & A* grade targeting</li><li>Essay & extended answer technique</li><li>University preparation</li></ul></div>
+      <div class="pc"><div class="pc-lvl">Cambridge iGCSE</div><div class="pc-name">International Science</div><div class="pc-amt"><sup>£</sup>60</div><div class="pc-per">per 60-minute session</div><div class="pc-div"></div><ul class="pc-feats"><li>Biology, Chemistry & Physics</li><li>Cambridge International spec</li><li>Practical & coursework support</li><li>Flexible time zones</li></ul></div>
+    </div>
+    <div class="price-note"><strong>Block booking discount:</strong> 10-session bundles receive 5% off the standard rate. Sessions must be used within one term. Payment taken upfront at booking. A free 15-minute introductory call is included for every new student.</div>
+    <div style="text-align:center;margin-top:48px;padding:48px;background:var(--off);border-radius:4px;border:1px solid var(--border);">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--ink);margin-bottom:12px;">Ready to get <em style="font-style:italic;color:var(--accent);">started?</em></div>
+      <p style="font-size:15px;color:var(--mid);margin-bottom:28px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.8;">Every new student begins with a free 15-minute introductory call — no commitment required. Let's discuss your goals and build a plan.</p>
+      <button class="btn-p" onclick="showTab('contact')">Book Your Free Intro Call</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXAMPLE SESSION -->
+<div class="panel" id="panel-session">
+  <div class="wrap">
+    <div class="lbl">Example Session</div>
+    <h2 class="sec">What a session <em>looks like</em></h2>
+    <p class="intro">Every session is tailored — but here's a typical 60-minute GCSE Biology session to give you a clear picture of what to expect.</p>
+    <div class="session-grid">
+      <div class="session-timeline">
+        <div class="session-block">
+          <div class="session-time">0–5 mins</div>
+          <div class="session-content">
+            <div class="session-title">Check-in & Review</div>
+            <div class="session-desc">We start with a quick check on how the previous week went at school — any new topics covered, any homework that raised questions, anything that didn't make sense in class. This keeps sessions connected to what's actually happening in school right now.</div>
+          </div>
+        </div>
+        <div class="session-block">
+          <div class="session-time">5–20 mins</div>
+          <div class="session-content">
+            <div class="session-title">Concept Explanation</div>
+            <div class="session-desc">The target topic is introduced or revisited using a shared digital whiteboard. Diagrams are drawn live — cell structures, biological processes, graphs — so the student sees the thinking, not just the finished result. Common misconceptions are tackled directly rather than avoided.</div>
+          </div>
+        </div>
+        <div class="session-block">
+          <div class="session-time">20–40 mins</div>
+          <div class="session-content">
+            <div class="session-title">Exam Question Practice</div>
+            <div class="session-desc">Past paper questions are worked through together on screen. We annotate the question first — identifying command words, marking allocations, what the examiner is actually asking for. The student attempts the answer, then we compare against the mark scheme line by line. This is where most marks are found.</div>
+          </div>
+        </div>
+        <div class="session-block">
+          <div class="session-time">40–55 mins</div>
+          <div class="session-content">
+            <div class="session-title">Technique Refinement</div>
+            <div class="session-desc">We identify the specific patterns in the student's answers — where they're losing marks, what language they're using that the examiner doesn't credit, what they know but aren't writing down. This is the most valuable part of any session and the thing most classroom teachers don't have time to do.</div>
+          </div>
+        </div>
+        <div class="session-block" style="border-bottom:none;">
+          <div class="session-time">55–60 mins</div>
+          <div class="session-content">
+            <div class="session-title">Summary & Homework</div>
+            <div class="session-desc">A short recap of what was covered, one or two focused practice questions to try before the next session, and a note of what we'll work on next time. Parents receive a brief written summary after every session so they're always in the picture.</div>
+          </div>
+        </div>
+      </div>
+      <div class="session-sidebar">
+        <div class="session-tools">
+          <div class="lbl" style="margin-bottom:20px;">Tools Used Every Session</div>
+          <div class="tool-item"><div class="tool-ico">💻</div><div><div class="tool-t">Zoom or Google Meet</div><div class="tool-d">HD video with screen sharing and annotation tools built in</div></div></div>
+          <div class="tool-item"><div class="tool-ico">📋</div><div><div class="tool-t">Shared Digital Whiteboard</div><div class="tool-d">Live diagram drawing and annotation — both student and tutor can write</div></div></div>
+          <div class="tool-item"><div class="tool-ico">📄</div><div><div class="tool-t">Real Past Papers</div><div class="tool-d">AQA and OCR past papers with official mark schemes used throughout</div></div></div>
+          <div class="tool-item"><div class="tool-ico">📊</div><div><div class="tool-t">Progress Notes</div><div class="tool-d">Written session summary sent to parents after every session</div></div></div>
+        </div>
+        <div class="session-note">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--ink);margin-bottom:12px;">Not just content — <em style="font-style:italic;color:var(--accent);">craft</em></div>
+          <p style="font-size:13px;color:var(--mid);line-height:1.8;">Most students already know more science than they think. What they're missing is the exam craft — knowing how to translate that knowledge into marks. As a trained exam marker, I know exactly what gets credited and what doesn't. That's what every session is built around.</p>
+          <div style="margin-top:24px;">
+            <button class="btn-p" onclick="showTab('contact')" style="width:100%;text-align:center;">Book a Free Intro Call</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INTERNATIONAL -->
+<div class="panel" id="panel-international">
+  <div class="wrap">
+    <div class="lbl gold">International Students</div>
+    <h2 class="sec">Cambridge iGCSE <em>worldwide</em></h2>
+    <p class="intro">Online sessions for students at English-speaking international schools — wherever in the world you are. Scheduling adapted around your time zone.</p>
+    <div class="intl-grid">
+      <div>
+        <div class="intl-feats">
+          <div class="intl-feat"><div class="intl-ico">🌐</div><div><div class="intl-ft">Fully online delivery</div><div class="intl-fd">Professional setup with HD video, shared digital whiteboard, and screen sharing. No compromise on session quality.</div></div></div>
+          <div class="intl-feat"><div class="intl-ico">🕐</div><div><div class="intl-ft">Flexible time zones</div><div class="intl-fd">Available to students across Europe, the Middle East, and Asia. Sessions scheduled around your school timetable.</div></div></div>
+          <div class="intl-feat"><div class="intl-ico">📋</div><div><div class="intl-ft">Coursework & practicals</div><div class="intl-fd">Full support for Cambridge iGCSE practical and coursework components that differ from standard UK GCSE specifications.</div></div></div>
+          <div class="intl-feat"><div class="intl-ico">🎯</div><div><div class="intl-ft">A & A* targeting</div><div class="intl-fd">Exam technique built specifically around the Cambridge International mark scheme and grading criteria.</div></div></div>
+        </div>
+        <div class="zones">
+          <div class="zone"><div class="zone-f">🇪🇺</div><div class="zone-n">Europe</div></div>
+          <div class="zone"><div class="zone-f">🇦🇪</div><div class="zone-n">Middle East</div></div>
+          <div class="zone"><div class="zone-f">🌏</div><div class="zone-n">Asia</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="intl-spec">
+          <div class="intl-spec-hd">Cambridge iGCSE Science</div>
+          <div class="intl-row"><span class="intl-k">Exam Board</span><span class="intl-v">Cambridge International</span></div>
+          <div class="intl-row"><span class="intl-k">Subjects</span><span class="intl-v">Biology · Chemistry · Physics</span></div>
+          <div class="intl-row"><span class="intl-k">Grading</span><span class="intl-v">A* — G Scale</span></div>
+          <div class="intl-row"><span class="intl-k">Target</span><span class="intl-v">All Grades · C to A*</span></div>
+          <div class="intl-row"><span class="intl-k">Format</span><span class="intl-v">Online · 60 Minutes</span></div>
+          <div class="intl-row"><span class="intl-k">Rate</span><span class="intl-v">£60 per session</span></div>
+          <div class="intl-row"><span class="intl-k">Availability</span><span class="intl-v">From September 2026</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="panel" id="panel-contact">
+  <div class="wrap">
+    <div class="lbl">Get in Touch</div>
+    <h2 class="sec">Start with a <em>free</em> call</h2>
+    <p class="intro">Every new student begins with a free 15-minute introductory call. We'll discuss your goals, pinpoint the gaps, and agree on a plan — before any commitment.</p>
+    <div class="contact-grid">
+      <div>
+        <div class="c-items">
+          <div class="c-item"><div class="c-ico">📧</div><div><div class="c-lbl">Email</div><div class="c-val">t.d.haycock@gmail.com</div></div></div>
+          <div class="c-item"><div class="c-ico">📍</div><div><div class="c-lbl">In Person</div><div class="c-val">St Ives & West Cornwall area</div></div></div>
+          <div class="c-item"><div class="c-ico">🌐</div><div><div class="c-lbl">Online</div><div class="c-val">UK-wide & international students welcome</div></div></div>
+          <div class="c-item"><div class="c-ico">🕐</div><div><div class="c-lbl">Availability</div><div class="c-val">Evenings, weekends & international time zones</div></div></div>
+          <div class="c-item"><div class="c-ico">📅</div><div><div class="c-lbl">Starting</div><div class="c-val">September 2026 — now taking bookings</div></div></div>
+        </div>
+        <div class="c-note"><strong>Response time:</strong> I aim to reply to all enquiries within 24 hours. The free introductory call is included for every new student — there is no obligation to proceed after the call.</div>
+      </div>
+      <div>
+        <form id="cForm" action="https://formspree.io/f/mwvzzdae" method="POST" onsubmit="handleSubmit(event)">
+          <div class="frow">
+            <div class="fg"><label class="fl">Your Name</label><input type="text" name="name" class="fi" placeholder="Parent or student name" required></div>
+            <div class="fg"><label class="fl">Email Address</label><input type="email" name="email" class="fi" placeholder="your@email.com" required></div>
+          </div>
+          <div class="fg"><label class="fl">Subject of Interest</label><select name="subject" class="fs" required><option value="" disabled selected>Select a subject</option><option>GCSE Biology</option><option>GCSE Chemistry</option><option>GCSE Physics</option><option>GCSE Triple Science</option><option>A-Level Biology</option><option>Cambridge iGCSE Science</option><option>Not sure yet</option></select></div>
+          <div class="fg"><label class="fl">Year Group</label><select name="year_group" class="fs"><option value="" disabled selected>Select year group</option><option>Year 9</option><option>Year 10</option><option>Year 11</option><option>Year 12 (AS)</option><option>Year 13 (A2)</option><option>International School Student</option><option>Other / Resitting</option></select></div>
+          <div class="fg"><label class="fl">Tell me about your goals</label><textarea name="message" class="ft" placeholder="What are you hoping to achieve? Any specific areas of difficulty? Online or in person?"></textarea></div>
+          <button type="submit" class="fsub">Send Enquiry</button>
+          <p class="fnote">Free intro call included · Response within 24 hours</p>
+        </form>
+        <div class="fok" id="fOk">
+          <div class="fok-ico">✓</div>
+          <h3>Enquiry received</h3>
+          <p>Thank you for getting in touch. I will reply within 24 hours to arrange your free introductory call.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end page-wrapper -->
+
+<footer>
+  <div class="fl2">The Science<span>Coach</span> · thesciencecoach.academy</div>
+  <div class="ft2">Thomas Haycock · Head of Science Faculty · St Ives, Cornwall · © 2026</div>
+</footer>
+
+<script>
+function showTab(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  var panel=document.getElementById('panel-'+id);
+  if(panel)panel.classList.add('active');
+  var map={home:0,about:1,subjects:2,pricing:3,session:4,international:5,contact:6};
+  var tabs=document.querySelectorAll('.tab-btn');
+  if(map[id]!==undefined)tabs[map[id]].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+async function handleSubmit(e){
+  e.preventDefault();
+  var form=document.getElementById('cForm');
+  var btn=form.querySelector('.fsub');
+  btn.textContent='Sending...';
+  btn.disabled=true;
+  try {
+    var response=await fetch(form.action,{
+      method:'POST',
+      body:new FormData(form),
+      headers:{'Accept':'application/json'}
+    });
+    if(response.ok){
+      form.style.display='none';
+      document.getElementById('fOk').style.display='block';
+    } else {
+      btn.textContent='Something went wrong — please email directly';
+      btn.disabled=false;
+    }
+  } catch(err){
+    btn.textContent='Something went wrong — please email directly';
+    btn.disabled=false;
+  }
+}
+window.addEventListener('scroll',function(){
+  document.querySelector('nav').style.boxShadow=
+    window.scrollY>10?'0 2px 20px rgba(0,0,0,0.07)':'none';
+});
+</script>
+</body>
+</html>
